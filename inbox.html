@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperCraft Studio | Custom Paper Design Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            /* Primary Gradient Colors */
+            --primary-blue: #4f46e5;
+            --primary-purple: #7c3aed;
+            --primary-teal: #14b8a6;
+            --accent-cyan: #06b6d4;
+            
+            /* Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            
+            /* Light Mode */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            
+            /* Spacing */
+            --section-padding: 6rem;
+            --container-max: 1200px;
+            
+            /* Transitions */
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --nav-bg: rgba(15, 23, 42, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== LOADING ANIMATION ===== */
+        .loader-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+
+        .loader-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== GRADIENT TEXT ===== */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple), var(--primary-teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ===== GLASSMORPHISM ===== */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.15);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass-bg);
+            border-color: var(--primary-blue);
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            transform: scale(0);
+            animation: ripple-anim 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar.scrolled {
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: rotate(15deg);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: var(--transition-smooth);
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 400px;
+            height: 100vh;
+            background: var(--bg-primary);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .hero-bg .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .hero-bg .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary-teal), var(--accent-cyan));
+            bottom: -10%;
+            right: -10%;
+            animation-delay: -5s;
+        }
+
+        .hero-bg .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-teal));
+            top: 40%;
+            left: 60%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards 0.3s;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards 0.7s;
+        }
+
+        .hero-visual {
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards 0.9s;
+        }
+
+        .hero-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            transition: transform 0.6s ease;
+        }
+
+        .hero-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .hero-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-card-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .hero-card-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hero-card-line {
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            border-radius: 4px;
+            opacity: 0.3;
+        }
+
+        .hero-card-line:nth-child(1) { width: 80%; }
+        .hero-card-line:nth-child(2) { width: 60%; }
+        .hero-card-line:nth-child(3) { width: 90%; }
+
+        .hero-floating-elements {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .float-element {
+            position: absolute;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: floatElement 6s infinite ease-in-out;
+        }
+
+        .float-element-1 {
+            top: -20px;
+            right: -20px;
+            animation-delay: 0s;
+        }
+
+        .float-element-2 {
+            bottom: 20px;
+            left: -30px;
+            animation-delay: -2s;
+        }
+
+        .float-element-3 {
+            top: 50%;
+            right: -40px;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: var(--section-padding) 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-reveal-delay-1 { transition-delay: 0.1s; }
+        .scroll-reveal-delay-2 { transition-delay: 0.2s; }
+        .scroll-reveal-delay-3 { transition-delay: 0.3s; }
+        .scroll-reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ===== ABOUT SECTION ===== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .about-feature-icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .about-feature-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .about-feature-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .about-visual-main {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234f46e5' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .about-visual-icon {
+            font-size: 4rem;
+            color: var(--primary-blue);
+            opacity: 0.3;
+        }
+
+        /* ===== SERVICES SECTION ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple), var(--primary-teal));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-icon::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            opacity: 0.9;
+            z-index: -1;
+        }
+
+        .service-card:nth-child(2) .service-icon::after {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-teal));
+        }
+
+        .service-card:nth-child(3) .service-icon::after {
+            background: linear-gradient(135deg, var(--primary-teal), var(--accent-cyan));
+        }
+
+        .service-card:nth-child(4) .service-icon::after {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue));
+        }
+
+        .service-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== ORDER WIZARD ===== */
+        .wizard-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .wizard-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .wizard-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--glass-border);
+            z-index: 0;
+        }
+
+        .wizard-progress-bar {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            z-index: 1;
+            transition: width 0.5s ease;
+        }
+
+        .wizard-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 2px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .wizard-step.active .step-number,
+        .wizard-step.completed .step-number {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .wizard-step.active .step-label {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .wizard-content {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+
+        .wizard-panel {
+            display: none;
+            animation: panelIn 0.4s ease;
+        }
+
+        .wizard-panel.active {
+            display: block;
+        }
+
+        @keyframes panelIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .wizard-panel h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .wizard-panel > p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 2px solid var(--glass-border);
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-blue);
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
+        }
+
+        .option-card i {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            color: var(--primary-blue);
+        }
+
+        .option-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            border: 2px solid var(--glass-border);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .wizard-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .wizard-buttons .btn {
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 2px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+
+        .btn-next {
+            margin-left: auto;
+        }
+
+        /* Review Panel */
+        .review-summary {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .review-value {
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        /* ===== WHY CHOOSE US ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 2.5rem 2rem;
+        }
+
+        .feature-box .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1.5rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-box .feature-icon::after {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.6s;
+        }
+
+        .feature-box:hover .feature-icon::after {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .feature-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info > p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition-smooth);
+        }
+
+        .contact-method:hover {
+            transform: translateX(8px);
+            border-color: var(--primary-blue);
+        }
+
+        .contact-method-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .contact-method-icon.whatsapp {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+        }
+
+        .contact-method-icon.facebook {
+            background: linear-gradient(135deg, #1877f2, #0d5cb6);
+        }
+
+        .contact-method-icon.email {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        }
+
+        .contact-method-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-method-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-form-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .contact-form-container h3 {
+            margin-bottom: 1.5rem;
+        }
+
+        /* ===== FLOATING WHATSAPP ===== */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            transition: var(--transition-bounce);
+            animation: whatsappPulse 2s infinite;
+        }
+
+        .floating-whatsapp:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.5);
+        }
+
+        @keyframes whatsappPulse {
+            0%, 100% { box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 8px 40px rgba(37, 211, 102, 0.6); }
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-visual {
+                order: -1;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-visual {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .section {
+                padding: 4rem 0;
+            }
+
+            .wizard-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-whatsapp {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .wizard-buttons {
+                flex-direction: column;
+            }
+
+            .wizard-buttons .btn {
+                width: 100%;
+            }
+
+            .btn-next {
+                margin-left: 0;
+            }
+        }
+
+        /* ===== REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loader-overlay" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                PaperCraft Studio
+            </a>
+            
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#order">Order Now</a>
+                <a href="#why-us">Why Us</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" onclick="closeMobileMenu()">Home</a>
+        <a href="#about" onclick="closeMobileMenu()">About</a>
+        <a href="#services" onclick="closeMobileMenu()">Services</a>
+        <a href="#order" onclick="closeMobileMenu()">Order Now</a>
+        <a href="#why-us" onclick="closeMobileMenu()">Why Us</a>
+        <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Designing Ideas into <span class="gradient-text">Powerful Learning Tools</span></h1>
+                <p>Premium customized paper designs for tuition teachers, students, and personal brands. Elevate your content with professional, tailored solutions.</p>
+                <div class="hero-buttons">
+                    <a href="#order" class="btn btn-primary" onclick="createRipple(event)">
+                        <i class="fas fa-rocket"></i> Start Order
+                    </a>
+                    <a href="#services" class="btn btn-secondary" onclick="createRipple(event)">
+                        <i class="fas fa-th-large"></i> View Services
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-card-header">
+                        <div class="hero-card-avatar">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; margin-bottom: 0.25rem;">Custom Paper Design</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Order #PC-2026</div>
+                        </div>
+                    </div>
+                    <div class="hero-card-lines">
+                        <div class="hero-card-line"></div>
+                        <div class="hero-card-line"></div>
+                        <div class="hero-card-line"></div>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                        <span style="padding: 0.25rem 0.75rem; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Mathematics</span>
+                        <span style="padding: 0.25rem 0.75rem; background: var(--bg-secondary); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary);">Grade 10</span>
+                    </div>
+                </div>
+                
+                <div class="hero-floating-elements">
+                    <div class="float-element float-element-1">
+                        <i class="fas fa-check-circle" style="color: var(--primary-teal); font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="float-element float-element-2">
+                        <i class="fas fa-pencil-alt" style="color: var(--primary-purple); font-size: 1.2rem;"></i>
+                    </div>
+                    <div class="float-element float-element-3">
+                        <i class="fas fa-award" style="color: var(--primary-blue); font-size: 1.3rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text scroll-reveal">
+                    <h3>Crafting Excellence in Every Sheet</h3>
+                    <p>PaperCraft Studio is your dedicated partner for premium customized paper designs. We specialize in creating tailored educational materials and branding content that stands out.</p>
+                    <p>Our team of expert designers works closely with tuition teachers, students, and personal brands to deliver professional-grade materials through a seamless social media-based ordering experience.</p>
+                    
+                    <div class="about-features">
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Custom Designs</h4>
+                                <p>Tailored to your exact needs</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Fast Turnaround</h4>
+                                <p>Quick delivery guaranteed</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Personalized Service</h4>
+                                <p>Direct designer communication</p>
+                            </div>
+                        </div>
+                        <div class="about-feature">
+                            <div class="about-feature-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="about-feature-text">
+                                <h4>Premium Quality</h4>
+                                <p>Professional-grade outputs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-visual scroll-reveal scroll-reveal-delay-2">
+                    <div class="about-visual-main">
+                        <i class="fas fa-file-signature about-visual-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2>Our <span class="gradient-text">Services</span></h2>
+                <p>Comprehensive design solutions tailored for education and branding needs</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="glass-card service-card scroll-reveal scroll-reveal-delay-1">
+                    <div class="service-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Tuition Paper Design</h3>
+                    <p>Professional question papers, model papers, and worksheets designed specifically for tuition classes with proper formatting and branding.</p>
+                </div>
+                
+                <div class="glass-card service-card scroll-reveal scroll-reveal-delay-2">
+                    <div class="service-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Assignments & Notes</h3>
+                    <p>Beautifully structured study materials, assignment templates, and comprehensive notes that enhance learning experiences.</p>
+                </div>
+                
+                <div class="glass-card service-card scroll-reveal scroll-reveal-delay-3">
+                    <div class="service-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3>Social Media Designs</h3>
+                    <p>Eye-catching posts, stories, and banners optimized for Facebook, Instagram, and other platforms to boost your brand presence.</p>
+                </div>
+                
+                <div class="glass-card service-card scroll-reveal scroll-reveal-delay-4">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Certificates & Posters</h3>
+                    <p>Elegant certificates for achievements and professional posters for events, promotions, and announcements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Wizard Section -->
+    <section class="section" id="order">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2>Place Your <span class="gradient-text">Order</span></h2>
+                <p>Complete our simple 4-step wizard to get your custom design started</p>
+            </div>
+            
+            <div class="wizard-container scroll-reveal">
+                <!-- Progress Bar -->
+                <div class="wizard-progress">
+                    <div class="wizard-progress-bar" id="progressBar" style="width: 0%;"></div>
+                    
+                    <div class="wizard-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <span class="step-label">User Type</span>
+                    </div>
+                    <div class="wizard-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <span class="step-label">Purpose</span>
+                    </div>
+                    <div class="wizard-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <span class="step-label">Details</span>
+                    </div>
+                    <div class="wizard-step" data-step="4">
+                        <div class="step-number">4</div>
+                        <span class="step-label">Review</span>
+                    </div>
+                </div>
+                
+                <!-- Wizard Content -->
+                <div class="wizard-content">
+                    <!-- Step 1: User Type -->
+                    <div class="wizard-panel active" id="step1">
+                        <h3>Who are you ordering for?</h3>
+                        <p>Select your user type to customize your experience</p>
+                        
+                        <div class="option-grid">
+                            <div class="option-card" onclick="selectUserType('teacher', this)">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <h4>Tuition Teacher</h4>
+                                <p>Question papers, worksheets & more</p>
+                            </div>
+                            <div class="option-card" onclick="selectUserType('student', this)">
+                                <i class="fas fa-user-graduate"></i>
+                                <h4>Student</h4>
+                                <p>Assignments, notes & projects</p>
+                            </div>
+                            <div class="option-card" onclick="selectUserType('brand', this)">
+                                <i class="fas fa-briefcase"></i>
+                                <h4>Personal Brand</h4>
+                                <p>Social media & promotional content</p>
+                            </div>
+                        </div>
+                        
+                        <div class="wizard-buttons">
+                            <div></div>
+                            <button class="btn btn-primary btn-next" onclick="nextStep()" id="btnStep1">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Purpose -->
+                    <div class="wizard-panel" id="step2">
+                        <h3>What do you need?</h3>
+                        <p>Select the type of design you want to order</p>
+                        
+                        <div class="option-grid" id="purposeOptions">
+                            <!-- Dynamically populated -->
+                        </div>
+                        
+                        <div class="wizard-buttons">
+                            <button class="btn btn-back" onclick="prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button class="btn btn-primary btn-next" onclick="nextStep()">
+                                Next <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Order Details -->
+                    <div class="wizard-panel" id="step3">
+                        <h3>Order Details</h3>
+                        <p>Provide specific details for your custom design</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Science">Science</option>
+                                    <option value="English">English</option>
+                                    <option value="Sinhala">Sinhala</option>
+                                    <option value="History">History</option>
+                                    <option value="Geography">Geography</option>
+                                    <option value="Commerce">Commerce</option>
+                                    <option value="ICT">ICT</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade</label>
+                                <select id="grade" required>
+                                    <option value="">Select Grade</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="term">Term</label>
+                                <select id="term" required>
+                                    <option value="">Select Term</option>
+                                    <option value="1st Term">1st Term</option>
+                                    <option value="2nd Term">2nd Term</option>
+                                    <option value="3rd Term">3rd Term</option>
+                                    <option value="Full Year">Full Year</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="paperType">Paper Type</label>
+                                <select id="paperType" required>
+                                    <option value="">Select Type</option>
+                                    <option value="MCQ">MCQ Paper</option>
+                                    <option value="Structured">Structured Paper</option>
+                                    <option value="Full Paper">Full Paper</option>
+                                    <option value="Essay">Essay Type</option>
+                                    <option value="Mixed">Mixed Format</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="medium">Medium</label>
+                            <select id="medium" required>
+                                <option value="">Select Medium</option>
+                                <option value="English">English</option>
+                                <option value="Sinhala">Sinhala</option>
+                                <option value="Tamil">Tamil</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="instructions">Special Instructions</label>
+                            <textarea id="instructions" rows="4" placeholder="Any specific requirements, topics to cover, or design preferences..."></textarea>
+                        </div>
+                        
+                        <div class="wizard-buttons">
+                            <button class="btn btn-back" onclick="prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button class="btn btn-primary btn-next" onclick="nextStep()">
+                                Review <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Review & Submit -->
+                    <div class="wizard-panel" id="step4">
+                        <h3>Review Your Order</h3>
+                        <p>Please verify all details before submitting</p>
+                        
+                        <div class="review-summary" id="reviewSummary">
+                            <!-- Dynamically populated -->
+                        </div>
+                        
+                        <div class="wizard-buttons">
+                            <button class="btn btn-back" onclick="prevStep()">
+                                <i class="fas fa-arrow-left"></i> Back
+                            </button>
+                            <button class="btn btn-primary" onclick="submitOrder()" style="background: linear-gradient(135deg, #25d366, #128c7e);">
+                                <i class="fab fa-whatsapp"></i> Submit via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section" id="why-us" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2>Why Choose <span class="gradient-text">Us</span></h2>
+                <p>Trusted by educators and brands across the country</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="glass-card feature-box scroll-reveal scroll-reveal-delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="counter" data-target="100">0</div>
+                    <h3>% Customized</h3>
+                    <p>Every design is uniquely crafted to match your specific requirements and brand identity.</p>
+                </div>
+                
+                <div class="glass-card feature-box scroll-reveal scroll-reveal-delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="counter" data-target="24">0</div>
+                    <h3>Hour Delivery</h3>
+                    <p>Fast turnaround times ensuring you get your materials when you need them most.</p>
+                </div>
+                
+                <div class="glass-card feature-box scroll-reveal scroll-reveal-delay-3">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="counter" data-target="50">0</div>
+                    <h3>% Affordable</h3>
+                    <p>Competitive pricing that makes professional design accessible to everyone.</p>
+                </div>
+                
+                <div class="glass-card feature-box scroll-reveal scroll-reveal-delay-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="counter" data-target="3">0</div>
+                    <h3>Step Ordering</h3>
+                    <p>Simple and intuitive ordering process through familiar social media platforms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-header scroll-reveal">
+                <h2>Get In <span class="gradient-text">Touch</span></h2>
+                <p>Ready to start? Contact us through your preferred channel</p>
+            </div>
+            
+            <div class="contact-grid">
+                <div class="contact-info scroll-reveal">
+                    <h3>Let's Create Something Amazing</h3>
+                    <p>Have questions or ready to place an order? Reach out to us directly through WhatsApp or Facebook for quick responses.</p>
+                    
+                    <div class="contact-methods">
+                        <a href="https://wa.me/94701234567" target="_blank" class="contact-method">
+                            <div class="contact-method-icon whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="contact-method-text">
+                                <h4>WhatsApp</h4>
+                                <p>+94 70 123 4567</p>
+                            </div>
+                        </a>
+                        
+                        <a href="https://facebook.com/papercraftstudio" target="_blank" class="contact-method">
+                            <div class="contact-method-icon facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <div class="contact-method-text">
+                                <h4>Facebook</h4>
+                                <p>@PaperCraftStudio</p>
+                            </div>
+                        </a>
+                        
+                        <div class="contact-method">
+                            <div class="contact-method-icon email">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-method-text">
+                                <h4>Email</h4>
+                                <p>hello@papercraftstudio.lk</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container scroll-reveal scroll-reveal-delay-2">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Name</label>
+                                <input type="text" id="contactName" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email</label>
+                                <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" placeholder="How can we help?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" rows="4" placeholder="Tell us about your project..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="createRipple(event)">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <div class="logo-icon" style="width: 32px; height: 32px; font-size: 1rem;">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                PaperCraft Studio
+            </div>
+            <p> Crafting excellence in every sheet. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/94701234567" target="_blank" class="floating-whatsapp" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // ===== LOADING SCREEN =====
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 800);
+        });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            html.setAttribute('data-theme', 'dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+            }
+        });
+
+        // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ===== MOBILE MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function openMobileMenu() {
+            hamburger.classList.add('active');
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileMenu() {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', () => {
+            if (hamburger.classList.contains('active')) {
+                closeMobileMenu();
+            } else {
+                openMobileMenu();
+            }
+        });
+
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // ===== RIPPLE EFFECT =====
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.classList.add('ripple');
+            
+            button.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // ===== SCROLL REVEAL (Intersection Observer) =====
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger counters if in features section
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => animateCounter(counter));
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounter(counter) {
+            if (counter.dataset.animated) return;
+            counter.dataset.animated = 'true';
+            
+            const target = parseInt(counter.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(easeOut * target);
+                
+                counter.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target;
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // ===== ORDER WIZARD =====
+        let currentStep = 1;
+        let orderData = {
+            userType: '',
+            purpose: '',
+            subject: '',
+            grade: '',
+            term: '',
+            paperType: '',
+            medium: '',
+            instructions: ''
+        };
+
+        const purposeOptions = {
+            teacher: [
+                { icon: 'fas fa-file-alt', title: 'Question Papers', desc: 'Custom exam papers' },
+                { icon: 'fas fa-copy', title: 'Model Papers', desc: 'Practice test papers' },
+                { icon: 'fas fa-tasks', title: 'Worksheets', desc: 'Classroom exercises' },
+                { icon: 'fas fa-sticky-note', title: 'Notes', desc: 'Study summaries' }
+            ],
+            student: [
+                { icon: 'fas fa-pen', title: 'Assignments', desc: 'Homework designs' },
+                { icon: 'fas fa-book-open', title: 'Notes', desc: 'Personal study notes' },
+                { icon: 'fas fa-project-diagram', title: 'Projects', desc: 'School projects' }
+            ],
+            brand: [
+                { icon: 'fas fa-image', title: 'Social Media Posts', desc: 'Instagram/Facebook' },
+                { icon: 'fas fa-bullhorn', title: 'Posters', desc: 'Promotional banners' },
+                { icon: 'fas fa-award', title: 'Certificates', desc: 'Achievement awards' }
+            ]
+        };
+
+        function selectUserType(type, element) {
+            orderData.userType = type;
+            
+            // Remove selected from all
+            document.querySelectorAll('#step1 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected to clicked
+            element.classList.add('selected');
+        }
+
+        function populatePurposeOptions() {
+            const container = document.getElementById('purposeOptions');
+            const options = purposeOptions[orderData.userType] || [];
+            
+            container.innerHTML = options.map(opt => `
+                <div class="option-card" onclick="selectPurpose('${opt.title}', this)">
+                    <i class="${opt.icon}"></i>
+                    <h4>${opt.title}</h4>
+                    <p>${opt.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function selectPurpose(purpose, element) {
+            orderData.purpose = purpose;
+            
+            document.querySelectorAll('#step2 .option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentStep - 1) / 3) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.querySelectorAll('.wizard-step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                
+                if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                } else if (stepNum === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.wizard-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.getElementById('step' + step).classList.add('active');
+            currentStep = step;
+            updateProgressBar();
+        }
+
+        function nextStep() {
+            // Validation
+            if (currentStep === 1 && !orderData.userType) {
+                alert('Please select a user type');
+                return;
+            }
+            if (currentStep === 2 && !orderData.purpose) {
+                alert('Please select a purpose');
+                return;
+            }
+            if (currentStep === 3) {
+                orderData.subject = document.getElementById('subject').value;
+                orderData.grade = document.getElementById('grade').value;
+                orderData.term = document.getElementById('term').value;
+                orderData.paperType = document.getElementById('paperType').value;
+                orderData.medium = document.getElementById('medium').value;
+                orderData.instructions = document.getElementById('instructions').value;
+                
+                if (!orderData.subject || !orderData.grade || !orderData.term || !orderData.paperType || !orderData.medium) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+                
+                populateReview();
+            }
+            
+            if (currentStep < 4) {
+                if (currentStep === 1) populatePurposeOptions();
+                showStep(currentStep + 1);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function populateReview() {
+            const summary = document.getElementById('reviewSummary');
+            const userTypeLabels = {
+                teacher: 'Tuition Teacher',
+                student: 'Student',
+                brand: 'Personal Brand'
+            };
+            
+            summary.innerHTML = `
+                <div class="review-item">
+                    <span class="review-label">User Type</span>
+                    <span class="review-value">${userTypeLabels[orderData.userType]}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Purpose</span>
+                    <span class="review-value">${orderData.purpose}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Subject</span>
+                    <span class="review-value">${orderData.subject}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Grade</span>
+                    <span class="review-value">Grade ${orderData.grade}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Term</span>
+                    <span class="review-value">${orderData.term}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Paper Type</span>
+                    <span class="review-value">${orderData.paperType}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Medium</span>
+                    <span class="review-value">${orderData.medium}</span>
+                </div>
+                ${orderData.instructions ? `
+                <div class="review-item">
+                    <span class="review-label">Instructions</span>
+                    <span class="review-value" style="max-width: 60%; word-break: break-word;">${orderData.instructions}</span>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        function submitOrder() {
+            const userTypeLabels = {
+                teacher: 'Tuition Teacher',
+                student: 'Student',
+                brand: 'Personal Brand'
+            };
+            
+            const message = `*New Order - PaperCraft Studio*%0A%0A` +
+                `*User Type:* ${userTypeLabels[orderData.userType]}%0A` +
+                `*Purpose:* ${orderData.purpose}%0A` +
+                `*Subject:* ${orderData.subject}%0A` +
+                `*Grade:* ${orderData.grade}%0A` +
+                `*Term:* ${orderData.term}%0A` +
+                `*Paper Type:* ${orderData.paperType}%0A` +
+                `*Medium:* ${orderData.medium}%0A` +
+                (orderData.instructions ? `*Special Instructions:* ${orderData.instructions}%0A` : '') +
+                `%0AThank you! Please confirm my order.`;
+            
+            window.open(`https://wa.me/94701234567?text=${message}`, '_blank');
+        }
+
+        // ===== CONTACT FORM =====
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            const whatsappMessage = `*Contact Form - PaperCraft Studio*%0A%0A` +
+                `*Name:* ${name}%0A` +
+                `*Email:* ${email}%0A` +
+                `*Subject:* ${subject}%0A` +
+                `*Message:* ${message}`;
+            
+            window.open(`https://wa.me/94701234567?text=${whatsappMessage}`, '_blank');
+            
+            // Reset form
+            e.target.reset();
+        }
+
+        // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ===== PARALLAX EFFECT FOR HERO ORBS =====
+        window.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.gradient-orb');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 20;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
